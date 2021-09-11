@@ -2,16 +2,15 @@ import React from 'react'
 import MyButton from './components/button'
 import MyCheckbox from './components/checkbox'
 import MySwitch from './components/switch'
+import changeBackground from './store/actions/actions'
 import {useSelector, useDispatch} from 'react-redux'
-import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components'
-import { IndeterminateCheckBox } from '@material-ui/icons'
 
 function App() {
-  const button = useSelector(state => state.button)
-  const checkbox = useSelector(state => state.checkbox)
-  const toggle = useSelector(state => state.switch)
-  const background = useSelector(state => state.color)
+  const button = useSelector(state => state.changebackground.button)
+  const checkbox = useSelector(state => state.changebackground.checkbox)
+  const toggle = useSelector(state => state.changebackground.switch)
+  const background = useSelector(state => state.changebackground.color)
   const dispatch = useDispatch()
 
   const Container = styled.div`
@@ -38,12 +37,13 @@ function App() {
 
 
   const handleClick = (value) =>{
-    if(background === value)
-      dispatch({ type: 'changeBackground' , payload: '#ffffff'})    
-    else
-      dispatch({ type: 'changeBackground' , payload: value})
+    console.log(background)
+     if(background !== value)
+        dispatch(changeBackground(value))   
+      else{  
+        dispatch(changeBackground('#ffffff'))
+      }
   }
-
   const handleCheck = (hex) => {
       if(background === hex)
         return true
@@ -58,23 +58,23 @@ function App() {
         <Text>Change Background</Text>
         {button.map( button => {
             return(
-              <MyButton variant={button.variant} bg={button.bg} color={button.color} bordercolor={button.borderC} hexname={button.hexname} onClick={(e)=>handleClick(button.hexname)}/>
+              <MyButton key={button.color} variant={button.variant} bg={button.bg} color={button.color} bordercolor={button.borderC} hexname={button.hexname} onClick={(e)=>handleClick(button.hexname)}/>
             )
           })}
           {checkbox.map( (checkbox, index) => {
               if(index %2 == 0){
                 return(
-                  <MyCheckbox color={checkbox} value={true} onClick = {(e)=>handleClick(checkbox)} check = {handleCheck(checkbox)}/>
+                  <MyCheckbox key={checkbox} color={checkbox} value={true} onClick = {(e)=>handleClick(checkbox)} check = {handleCheck(checkbox)}/>
                 )
               }else{
                 return(
-                  <MyCheckbox color={checkbox} value={false} onClick = {(e)=>handleClick(checkbox)} check = {handleCheck(checkbox)}/>
+                  <MyCheckbox key={checkbox} color={checkbox} value={false} onClick = {(e)=>handleClick(checkbox)} check = {handleCheck(checkbox)}/>
                 )
               }
             })}
           {toggle.map( toggle => {
             return(
-              <MySwitch color={toggle} handleChange={(e)=>handleClick(toggle)} checked={handleCheck(toggle)}/>
+              <MySwitch key={toggle} color={toggle} handleChange={(e)=>handleClick(toggle)} checked={handleCheck(toggle)}/>
             )
           })}
         </Wrapper>

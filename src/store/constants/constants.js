@@ -1,0 +1,5 @@
+const ACTIONS = {
+    CHANGE_BACKGROUND : 'CHANGE_BACKGROUND'
+}
+
+export default ACTIONS
